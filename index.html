@@ -135,8 +135,8 @@
     document.getElementById('scaleSlider').addEventListener('input', function() {
         const scaleZoom = this.value;
         document.getElementById('displacement').setAttribute('scaleZoom', scaleZoom);
-        const box = document.getElementById('box');
-        box.style.transform = `scale(${scaleZoom}, ${scaleZoom})`;
+        const player = document.getElementById('my-player');
+        player.style.transform = `scale(${scaleZoom}, ${scaleZoom})`;
     });
 
 </script>

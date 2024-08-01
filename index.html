@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Theta Video Animate</title>
     <link href="https://vjs.zencdn.net/7.15.4/video-js.css" rel="stylesheet" />
     <script src='https://vjs.zencdn.net/7.15.4/video.js'></script>
@@ -9,6 +10,7 @@
     <script src="https://d1ktbyo67sh8fw.cloudfront.net/js/theta.umd.min.js"></script>
     <script src="https://d1ktbyo67sh8fw.cloudfront.net/js/theta-hls-plugin.umd.min.js"></script>
     <script src="https://d1ktbyo67sh8fw.cloudfront.net/js/videojs-theta-plugin.min.js"></script>
+    <!-- COMMENT : if some problem with Microsoft Edge - try: Chrome, Firefox, Opera -->
     <style>
         /* apply filter at video */
         #my-player video {
@@ -53,21 +55,44 @@
         }
 
         .control {
-            position: fixed;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            position: absolute;
             top: 10px;
-            right: 10px;
-            z-index: 1000;
+            left: 10px;
+            right: flex;
+            display: inline-block;
             background: rgba(255, 255, 255, 0.8);
             padding: 10px;
             border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            white-space: nowrap;
         }
+
+    .drag-handle {
+        width: 20px;
+        height: 20px;
+        background-color: gray;
+        cursor: move;
+        display: inline-block;
+        margin-right: 10px;
+    }
+
+    .control-container {
+        display: flex;
+        align-items: center;
+    }
 
     </style>
 </head>
 <body>
 
 <div class="control">
-    <div> Theta Video Animate control </div>
+    <div class="control-container">
+        <div class="drag-handle"></div>
+        <div>Theta Video Animate control</div>
+    </div>
     <div>
         <label for="turbulenceFrequency">Turbulence:</label>
         <input id="turbulenceFrequency" type="range" min="0.0" max="0.01" step="0.0001" value="0.0">
@@ -78,7 +103,7 @@
     </div>
     <div>
         <label for="my-player" id="box">Zoom:</label>
-        <input id="scaleSlider" type="range" min="1" max="5" step="0.1" value="2">
+        <input id="scaleSlider" type="range" min="0" max="3" step="0.01" value="0">
     </div>
     <button class="toggle-oscillation">Auto Oscillation</button>
     <button class="toggle-mouse-oscillation">Mouse Oscillation</button>
@@ -96,6 +121,64 @@
 </svg>
 
 <script>
+
+    function updateControlPosition() {
+        const control = document.querySelector('.control');
+        const windowWidth = window.innerWidth;
+        const controlWidth = control.offsetWidth;
+
+        // Calcola il valore di left
+        const leftPosition = windowWidth - controlWidth - 10; // 10px di margine
+
+        // Applica il valore calcolato a left
+        control.style.left = `${leftPosition}px`;
+    }
+
+    // Aggiorna la posizione iniziale
+    updateControlPosition();
+
+    // Aggiungi un listener per aggiornare la posizione quando la finestra viene ridimensionata
+    window.addEventListener('resize', updateControlPosition);
+
+
+
+
+    // Event listeners for dragging
+const controlDiv = document.querySelector('.control');
+const dragHandle = document.querySelector('.drag-handle');
+
+let isDragging = false;
+let offsetX, offsetY;
+
+dragHandle.addEventListener('mousedown', function(e) {
+    isDragging = true;
+    // Calcola l'offset rispetto al click iniziale
+    offsetX = e.clientX - controlDiv.offsetLeft;
+    offsetY = e.clientY - controlDiv.offsetTop;
+    controlDiv.style.opacity = '0.5';
+    e.preventDefault(); // Evita comportamenti indesiderati
+});
+
+document.addEventListener('mousemove', function(e) {
+    if (isDragging) {
+        // Calcola le nuove posizioni del div "control"
+        let x = e.clientX - offsetX;
+        let y = e.clientY - offsetY;
+        controlDiv.style.left = `${x}px`;
+        controlDiv.style.top = `${y}px`;
+    }
+});
+
+document.addEventListener('mouseup', function() {
+    if (isDragging) {
+        isDragging = false;
+        controlDiv.style.opacity = '1';
+    }
+});
+
+
+
+
     const optionalHlsOpts = null;
     const optionalThetaOpts = {
         allowRangeRequests: true, // false if cdn does not support range headers  
@@ -134,7 +217,6 @@
     // update zoom
     document.getElementById('scaleSlider').addEventListener('input', function() {
         const scaleZoom = this.value;
-        document.getElementById('displacement').setAttribute('scaleZoom', scaleZoom);
         const player = document.getElementById('my-player');
         player.style.transform = `scale(${scaleZoom}, ${scaleZoom})`;
     });
@@ -269,3 +351,4 @@
 
 </body>
 </html>
+

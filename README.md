@@ -14,4 +14,4 @@ https://metaquid.github.io/theta-video-animate/
 
 You may have problems with the Microsoft edge browser that were not present before but appeared later.
 
-In this case, try other browsers that work: firefox, crome, opera.
+In this case, try other browsers that work: firefox, chrome, opera.

@@ -9,7 +9,9 @@ you will see a video that comes from the Theta cloud that you can interact with 
 or try directly the link:
 https://metaquid.github.io/theta-video-animate/
 
-IMPORTANT NOTE:
-you may have problems with the Microsoft edge browser that were not present before but appeared later.
+
+# IMPORTANT NOTE:
+
+You may have problems with the Microsoft edge browser that were not present before but appeared later.
 
 In this case, try other browsers that work: firefox, crome, opera.

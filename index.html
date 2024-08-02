@@ -129,7 +129,7 @@
     <div>
 	Oscillation: 
         <button class="toggle-oscillation">Auto </button>
-        <button class="toggle-mouse-oscillation">Manual </button>
+        <button class="toggle-mouse-oscillation">Hand </button>
     </div>
 </div>
 
@@ -339,11 +339,11 @@
     toggleMouseOscillationButton.addEventListener('click', () => {
         oscillazioneMouseAttiva = !oscillazioneMouseAttiva;
         if (oscillazioneMouseAttiva) {
-            toggleMouseOscillationButton.textContent = 'Deactive Manual';
+            toggleMouseOscillationButton.textContent = 'Deactive Hand';
             document.addEventListener('mousemove', handleMouseMove);
             document.addEventListener('touchmove', (e) => handleMouseMove(e.touches[0]));
         } else {
-            toggleMouseOscillationButton.textContent = 'Manual ';
+            toggleMouseOscillationButton.textContent = 'Hand ';
             document.removeEventListener('mousemove', handleMouseMove);
             document.removeEventListener('touchmove', (e) => handleMouseMove(e.touches[0]));
             resetTransform();

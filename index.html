@@ -56,27 +56,48 @@
 
         .control {
             font-family: Arial, sans-serif;
-            font-size: 16px;
+            font-size: 1.2rem;
             position: absolute;
-            top: 10px;
-            left: 10px;
+            top: 1rem;
+            left: 1rem;
             right: flex;
             display: inline-block;
             background: rgba(255, 255, 255, 0.8);
-            padding: 10px;
-            border-radius: 5px;
+            padding: 1rem;
+            border-radius: 0.5rem;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
             z-index: 1000;
             white-space: nowrap;
         }
 
+	.control button,
+	.control input[type="button"],
+	.control input[type="submit"] {
+	  font-size: 1rem; /* inherit; */
+	  border-radius: 0.5rem;
+	}
+
+        @media (max-width: 600px) {
+          .control {
+            font-size: 1.4rem;
+          }
+        }
+
+        @media (prefers-color-scheme: dark) {
+          .control {
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+          }
+        }
+
     .drag-handle {
-        width: 20px;
-        height: 20px;
+        width: 1rem;
+        height: 1rem;
+        border-radius: 1rem;
         background-color: gray;
         cursor: move;
         display: inline-block;
-        margin-right: 10px;
+        margin-right: 1rem;
     }
 
     .control-container {
@@ -105,8 +126,11 @@
         <label for="my-player" id="box">Zoom:</label>
         <input id="scaleSlider" type="range" min="0.0" max="3.0" step="0.01" value="1.0">
     </div>
-    <button class="toggle-oscillation">Auto Oscillation</button>
-    <button class="toggle-mouse-oscillation">Mouse Oscillation</button>
+    <div>
+	Oscillation: 
+        <button class="toggle-oscillation">Auto </button>
+        <button class="toggle-mouse-oscillation">Manual </button>
+    </div>
 </div>
 
 <div class="oscillante">
@@ -144,37 +168,37 @@
 
 
     // Event listeners for dragging
-const controlDiv = document.querySelector('.control');
-const dragHandle = document.querySelector('.drag-handle');
+	const controlDiv = document.querySelector('.control');
+	const dragHandle = document.querySelector('.drag-handle');
 
-let isDragging = false;
-let offsetX, offsetY;
+	let isDragging = false;
+	let offsetX, offsetY;
 
-dragHandle.addEventListener('mousedown', function(e) {
-    isDragging = true;
-    // Calcola l'offset rispetto al click iniziale
-    offsetX = e.clientX - controlDiv.offsetLeft;
-    offsetY = e.clientY - controlDiv.offsetTop;
-    controlDiv.style.opacity = '0.5';
-    e.preventDefault(); // Evita comportamenti indesiderati
-});
+	dragHandle.addEventListener('mousedown', function(e) {
+	    isDragging = true;
+	    // Calcola l'offset rispetto al click iniziale
+	    offsetX = e.clientX - controlDiv.offsetLeft;
+	    offsetY = e.clientY - controlDiv.offsetTop;
+	    controlDiv.style.opacity = '0.5';
+	    e.preventDefault(); // Evita comportamenti indesiderati
+	});
 
-document.addEventListener('mousemove', function(e) {
-    if (isDragging) {
-        // Calcola le nuove posizioni del div "control"
-        let x = e.clientX - offsetX;
-        let y = e.clientY - offsetY;
-        controlDiv.style.left = `${x}px`;
-        controlDiv.style.top = `${y}px`;
-    }
-});
+	document.addEventListener('mousemove', function(e) {
+	    if (isDragging) {
+	        // Calcola le nuove posizioni del div "control"
+	        let x = e.clientX - offsetX;
+	        let y = e.clientY - offsetY;
+	        controlDiv.style.left = `${x}px`;
+	        controlDiv.style.top = `${y}px`;
+	    }
+	});
 
-document.addEventListener('mouseup', function() {
-    if (isDragging) {
-        isDragging = false;
-        controlDiv.style.opacity = '1';
-    }
-});
+	document.addEventListener('mouseup', function() {
+	    if (isDragging) {
+	        isDragging = false;
+	        controlDiv.style.opacity = '1';
+	    }
+	});
 
 
 
@@ -302,10 +326,10 @@ document.addEventListener('mouseup', function() {
     toggleOscillationButton.addEventListener('click', () => {
         oscillazioneAutomaticaAttiva = !oscillazioneAutomaticaAttiva;
         if (oscillazioneAutomaticaAttiva) {
-            toggleOscillationButton.textContent = 'Deactive Auto Oscillation';
+            toggleOscillationButton.textContent = 'Deactive Auto';
             startRandomKeyframeAnimation();
         } else {
-            toggleOscillationButton.textContent = 'Active Auto Oscillation';
+            toggleOscillationButton.textContent = 'Auto ';
             clearInterval(animationInterval);
             oscillante.style.animation = 'none';
             resetTransform();
@@ -315,11 +339,11 @@ document.addEventListener('mouseup', function() {
     toggleMouseOscillationButton.addEventListener('click', () => {
         oscillazioneMouseAttiva = !oscillazioneMouseAttiva;
         if (oscillazioneMouseAttiva) {
-            toggleMouseOscillationButton.textContent = 'Deactive Mouse Oscillation';
+            toggleMouseOscillationButton.textContent = 'Deactive Manual';
             document.addEventListener('mousemove', handleMouseMove);
             document.addEventListener('touchmove', (e) => handleMouseMove(e.touches[0]));
         } else {
-            toggleMouseOscillationButton.textContent = 'Active Mouse Oscillation';
+            toggleMouseOscillationButton.textContent = 'Manual ';
             document.removeEventListener('mousemove', handleMouseMove);
             document.removeEventListener('touchmove', (e) => handleMouseMove(e.touches[0]));
             resetTransform();
